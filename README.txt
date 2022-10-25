@@ -1,23 +1,22 @@
 LEGEND
 ------
-```
+
 Image names:    redis, jenkins, nginx
 Container name: mydb
 Commit ID:      c7337
 Note:           Some entries have more than one example
-```
+
 
 MANAGE REGISTRY
 ---------------
 
 Log in to the Docker hub registry
-`$ docker login <someregistry.example.com>`
+$ docker login <someregistry.example.com>
 
 Log out from the registry previously logged in and check if it was really removed:
-`$ docker logout; ls -la ~/.docker`
+$ docker logout; ls -la ~/.docker
 
 Setup private registry:
-```
 $ docker run -p 5000:5000 registry
 $ ID='docker run -id fedora /bin/bash'
 $ docker commit $ID fedora-20
@@ -25,105 +24,91 @@ $ docker tag fedora-20 registry-host:5000/lmaly/f20
 $ docker -d --insecure-registry registry-host:5000
 $ docker push registry-host:5000/lmaly/f20
 $ docker pull registry-host:5000/lmaly/f20
-```
+
 
 GENERAL USAGE
 -------------
 
 Find out installed Docker version:
-```
 $ docker --version
 $ docker version
-```
+
 Check if the Docker daemon is running and Docker server info:
-`$ docker info`
+$ docker info
 
 Make sure Docker server starts automatically on boot (RHEL7):
-`$ sudo systemctl enable docker; sudo systemctl start docker`
+$ sudo systemctl enable docker; sudo systemctl start docker
 
 Use docker from a nonroot user, add the user to the docker group:
-`$ sudo gpasswd -a $USER docker`
+$ sudo gpasswd -a $USER docker
 
 Create a new container with a specific name (otherwise name is randomized), but don't start it:
-`$ docker create --name="Lucian's awesome service" ubuntu:latest`
+$ docker create --name="Lucian's awesome service" ubuntu:latest
 
 Start/restart a stopped container:
-```
 $ docker start mydb
 $ docker start c7337
-```
+
 Run a container in the background (docker run = docker create + docker start):
-```
 $ docker run -d jenkins
 $ docker run -d <image>:<tag>
-```
+
 Run an interactive container:
-```
 $ docker run -it ubuntu bash
 $ docker run -it <image>:<tag> <command>
-```
+
 Run a container automatically removed on stop:
-`$ docker run --rm ubuntu bash`
+$ docker run --rm ubuntu bash
 
 Run a named container:
-`$ docker run --name mydb redis`
+$ docker run --name mydb redis
 
 Inspect a docker container:
-`$ docker inspect mydb`
+$ docker inspect mydb
 
 Pausing/unpausing the container:
-```
 $ docker pause c7337
 $ docker unpause c7337
-```
 
 Stop a container:
-`$ docker stop mydb`
+$ docker stop mydb
 
 SIGKILL after 25s if has not stopped by SIGTERM:
-`$ docker stop -t 25 mydb`
+$ docker stop -t 25 mydb
 
 SIGKILL a container:
-```
 $ docker kill mydb
 $ docker kill --signal=USR1 c7337
-```
 
 Add metadata/labels to a container:
-```
 $ docker run -d label=traffic.backend=jenkins jenkins
 $ docker run -d --name labels -l deployer=Lucian -l tester=Lucian ubuntu:latest sleep 1000
-```
 
 Add environment variable to the container run:
-`$ docker run -d -p 8080:8080 -e ENV="Hello" mydb`
+$ docker run -d -p 8080:8080 -e ENV="Hello" mydb
 
 Run another process in the running container, get inside the container:
-```
 $ docker exec -it c7337 bash
 $ docker exec nginx "yum -y update nginx"
-```
 
 Show live logs of the running daemon container as well as timestamps:
-```
 $ docker logs -ft c7337
 $ docker logs <container_name>
-```
+
 
 MANAGE CONTAINERS
 -----------------
 
 List running containers:
-`$ docker ps`
+$ docker ps
 
 List all containers (running & stopped):
-`$ docker ps -a`
+$ docker ps -a
 
 Searching Docker images:
-`$ docker search ubuntu`
+$ docker search ubuntu
 
 Download image from the registry:
-```
 $ docker pull ubuntu:latest
 $ docker pull debian@sha256:asd654ferf564rwer21fvwrd654rwefv213s
 
